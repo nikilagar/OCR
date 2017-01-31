@@ -4,7 +4,7 @@ import cv2
 
 
 def getBinarizedImage(path):
-    img = cv2.imread('images/test.jpg', cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
     binarizedImage=cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
     return binarizedImage
 
