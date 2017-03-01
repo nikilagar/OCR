@@ -2,8 +2,15 @@ from BinarizeImage import *
 from matplotlib import pyplot as py
 import componentGetter,extractingLines
 
-image=getBinarizedImage("images/hello.jpg")
-extractingLines.doit(image)
+image=getBinarizedImage("images/test.jpg") #Getting Binarized image and Denoised image :)
+print("hello")
+
+
+
+
+
+
+'''extractingLines.doit(image)
 
 components=componentGetter.getComponents(image)
 print(len(components))
@@ -29,3 +36,4 @@ yper=[0 for i in range(len(per))]
 py.imshow(image,'gray')
 py.show()
 #print(image)
+'''
