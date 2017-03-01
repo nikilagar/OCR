@@ -5,15 +5,19 @@ from matplotlib import pyplot as plt
 
 def getBinarizedImage(path):
     img = cv2.imread(path, cv2.IMREAD_GRAYSCALE) #reading image in grayscale  format :P
-
     binarizedImage=cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2) #Applying gauss Meth to bin ;P
     #binarizedImage = cv2.medianBlur(img, 3) #reducing noise (taking mean of 7X7 grid ) ,,, odd value :'(
-    cv2.imshow("IMG",binarizedImage)
-    cv2.waitKey()
-    cv2.imwrite("images/skeletonizeThis.jpg",binarizedImage)
+    #cv2.imshow("IMG",binarizedImage)
+    #cv2.waitKey()
+    #cv2.imwrite("images/skeletonizeThis.jpg",binarizedImage)
     #plt.imshow(binarizedImage,'gray')
     #plt.show()
     return binarizedImage
+
+
+
+
+
 
 
 
