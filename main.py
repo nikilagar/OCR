@@ -1,14 +1,10 @@
-from BinarizeImage import *
-import thinnigSkeletonization as tsk
 import cv2
-from matplotlib import pyplot as py
-import componentGetter,extractingLines
 
+import thinnigSkeletonization as tsk
+from BinarizeImage import *
 
-
-
-
-image=getBinarizedImage("images/fuckingImage.jpg") #Getting Binarized image and Denoised image :)
+image=getBinarizedImage("images/tryMe.jpeg") #Getting Binarized image and Denoised image :)
+cv2.imshow("binarized",image)
 image=tsk.getSkeletonizedImage(image)   #thinning image
 cv2.imshow("SeeMe",image)   #showing image
 cv2.waitKey()
