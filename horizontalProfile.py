@@ -1,4 +1,3 @@
-from matplotlib import pyplot as plt
 def getPoints(img):
     imgx,imgy=len(img),len(img[0])
     x=[];y=[];finalPts=[]
@@ -20,6 +19,5 @@ def getPoints(img):
             finalPts.append([pr,i-1])
             i-=1
         i+=1
-    plt.plot(x,y)
     #plt.show()
     return finalPts
