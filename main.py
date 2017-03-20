@@ -1,12 +1,24 @@
 import cv2
-
 import thinnigSkeletonization as tsk
 from BinarizeImage import *
+import verticalProfile as vp
+import horizontalProfile as hp
+import Features
+from matplotlib import pyplot as plt
 
-image=getBinarizedImage("images/tryMe.jpeg") #Getting Binarized image and Denoised image :)
-cv2.imshow("binarized",image)
-image=tsk.getSkeletonizedImage(image)   #thinning image
-cv2.imshow("SeeMe",image)   #showing image
+image=cv2.imread("images/fuckingImage.jpg",0)
+image=getBinarizedImage(image) #Getting Binarized image and Denoised image :)
+
+#segment.SegmentImage(cv2.imread("images/fuckingImage.jpg",0))
+
+#cv2.imshow("binarized",image)
+#cv2.imshow("SeeMe",image)   #showing image
+characters=vp.segment(image,hp.getPoints(image))
+
+
+for i in characters:
+    print(Features.getFeatures(image[i[0]:i[2]+1,i[1]:i[3]+1]))
+
 cv2.waitKey()
 print("hello")
 

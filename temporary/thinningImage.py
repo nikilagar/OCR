@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import BinarizeImage
-img=BinarizeImage.getBinarizedImage("images/fuckingImage.jpg")
+img=BinarizeImage.getBinarizedImage("images/test0.jpg")
 size = np.size(img)
 skel = np.zeros(img.shape, np.uint8)
 element = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))

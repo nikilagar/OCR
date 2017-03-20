@@ -1,9 +1,14 @@
 import cv2
+import numpy as np
 
 
+def getBinarizedImage(img):
+#    img = cv2.imread(path, cv2.IMREAD_GRAYSCALE) #reading image in grayscale  format :P
 
-def getBinarizedImage(path):
-    img = cv2.imread(path, cv2.IMREAD_GRAYSCALE) #reading image in grayscale  format :P
+    #kernel=np.ones((5,5),np.uint8)
+    #img_erosion=cv2.erode(img,kernel,iterations=1)
+    #img_dilation=cv2.dilate(img_erosion,kernel,iterations=1)
+
     binarizedImage=cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2) #Applying gauss Meth to bin ;P
     #binarizedImage = cv2.medianBlur(img, 3) #reducing noise (taking mean of 7X7 grid ) ,,, odd value :'(
     #cv2.imshow("IMG",binarizedImage)
