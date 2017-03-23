@@ -6,8 +6,8 @@ import os
 import pandas as pd
 
 path="/home/nikhil/PycharmProjects/English/Fnt/Selected Fonts/Sample0"
-currentChar=65
-for smpl in range(11,15):
+currentChar=80
+for smpl in range(25,30):
 	trdata=[]
 	clasArr=[]
 	totalFiles=len(os.listdir(path+str(smpl)))

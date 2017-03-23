@@ -41,6 +41,8 @@ def getMoment(img):
 #Returning list of features
 def getFeatures(img):
     featureList=[]
+    cv2.imshow("char",img)
+    cv2.waitKey()
     img=normalizer.getNormalizedImage(img)
     zones=getZonesValue(img)
     for i in zones:

@@ -1,30 +1,14 @@
-import nltk
-import random
-import pandas as pd 
-import numpy as np
-import string
+import pandas as pd
 import random
 
-from nltk.corpus import stopwords	
-from nltk.classify.scikitlearn import SklearnClassifier
-from sklearn.naive_bayes import MultinomialNB, BernoulliNB
 from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.svm import SVC, LinearSVC, NuSVC, SVR, LinearSVR
-from nltk.classify import ClassifierI
-from sklearn import svm
-from sklearn import linear_model
 from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict
-from nltk.classify import ClassifierI
-from statistics import mode 
-from sklearn import cross_validation
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier, GradientBoostingClassifier, ExtraTreesClassifier
-from sklearn.feature_selection import SelectKBest, f_classif
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cross_validation import train_test_split
-from sklearn.metrics import roc_curve, auc
 classification=[]
 trainData=[]
-for i in range(65,75):
+for i in range(65,):
     df = pd.read_csv('data/trdata'+chr(i)+'.csv')
     trainData += df.values.tolist()
     df = pd.DataFrame()
