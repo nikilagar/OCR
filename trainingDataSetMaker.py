@@ -6,12 +6,13 @@ import os
 import pandas as pd
 
 path="/home/nikhil/PycharmProjects/English/Fnt/Selected Fonts/Sample0"
+DataFolderPath="tmpdata1"
 currentChar=65
-for smpl in range(11,15):
+for smpl in range(11,37):
 	trdata=[]
 	clasArr=[]
 	totalFiles=len(os.listdir(path+str(smpl)))
-	for imno in range(min(200,totalFiles)):
+	for imno in range(min(100,totalFiles)):
 		print(path+str(smpl)+"/"+str(imno)+".png")
 		img=cv2.imread(path+str(smpl)+"/"+str(imno)+".png",0)
 
@@ -21,9 +22,9 @@ for smpl in range(11,15):
 		clasArr.append(currentChar)
 		print(len(i))
 	df=pd.DataFrame(trdata)
-	df.to_csv("trdata"+chr(currentChar)+".csv",index=False)
+	df.to_csv(DataFolderPath + "/trdata"+chr(currentChar)+".csv",index=False)
 	finClasArr=[clasArr]
 	df=pd.DataFrame(finClasArr)
-	df.to_csv("clasArr"+chr(currentChar)+".csv",index=False)
+	df.to_csv(DataFolderPath + "/clasArr"+chr(currentChar)+".csv",index=False)
 	currentChar+=1
 

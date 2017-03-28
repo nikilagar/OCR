@@ -8,8 +8,10 @@ import random
 from sklearn.cross_validation import train_test_split
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier, GradientBoostingClassifier, ExtraTreesClassifier
 
+DataFolderPath="tmpdata1"
 
-image=cv2.imread("images/fIMage.jpg",0)
+
+image=cv2.imread("images/allTypes.jpeg",0)
 image=getBinarizedImage(image) #Getting Binarized image and Denoised image :)
 
 
@@ -22,20 +24,21 @@ characters=vp.segment(image,hp.getPoints(image))
 for i in characters:
     print(Features.getFeatures(image[i[0]:i[2]+1,i[1]:i[3]+1]))
 
+
 #MACHINE
 classification=[]
 trainData=[]
 for i in range(65,91):
-    df = pd.read_csv('data/trdata'+chr(i)+'.csv')
+    df = pd.read_csv(DataFolderPath+ '/trdata'+chr(i)+'.csv')
     trainData += df.values.tolist()
     df = pd.DataFrame()
-    df = pd.read_csv('data/clasArr'+chr(i)+'.csv')
+    df = pd.read_csv(DataFolderPath+'/clasArr'+chr(i)+'.csv')
     classification += df.values.tolist()[0]
 
 X_trainData, X_test, y_trainData, y_test = train_test_split(trainData,classification, random_state=int(random.random()*1000))
 
 alg = RandomForestClassifier(random_state=1, n_estimators=28, max_depth = 9, min_samples_split=10, min_samples_leaf=8)
-alg.fit(X_trainData, y_trainData)
+alg.fit(trainData, classification)
 for i in characters:
     print(chr(alg.predict(Features.getFeatures(image[i[0]:i[2]+1,i[1]:i[3]+1]))[0]),end=" ")
 
