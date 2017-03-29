@@ -1,3 +1,5 @@
+from sklearn.linear_model import LogisticRegression
+
 from BinarizeImage import *
 import verticalProfile as vp
 import horizontalProfile as hp
@@ -11,19 +13,23 @@ from sklearn.ensemble import RandomForestClassifier, VotingClassifier, GradientB
 DataFolderPath="tmpdata1"
 
 
-image=cv2.imread("images/allTypes.jpeg",0)
+image=cv2.imread("images/fIMage.jpg",0)
 image=getBinarizedImage(image) #Getting Binarized image and Denoised image :)
 
 
 
 #cv2.imshow("binarized",image)
 #cv2.imshow("SeeMe",image)   #showing image
-characters=vp.segment(image,hp.getPoints(image))
 
-
-for i in characters:
-    print(Features.getFeatures(image[i[0]:i[2]+1,i[1]:i[3]+1]))
-
+charactersLineWise=[]
+lines=hp.getPoints(image)
+for i in lines:
+    charactersLineWise.append(vp.segment(image,[i]))
+'''
+for characters in charactersLineWise:
+    for i in characters:
+        print(Features.getFeatures(image[i[0]:i[2]+1,i[1]:i[3]+1]))
+'''
 
 #MACHINE
 classification=[]
@@ -37,10 +43,14 @@ for i in range(65,91):
 
 X_trainData, X_test, y_trainData, y_test = train_test_split(trainData,classification, random_state=int(random.random()*1000))
 
-alg = RandomForestClassifier(random_state=1, n_estimators=28, max_depth = 9, min_samples_split=10, min_samples_leaf=8)
+alg=LogisticRegression(C=.9, max_iter=80)
+#alg = RandomForestClassifier(random_state=1, n_estimators=28, max_depth = 9, min_samples_split=10, min_samples_leaf=8)
+#alg=ExtraTreesClassifier()
 alg.fit(trainData, classification)
-for i in characters:
-    print(chr(alg.predict(Features.getFeatures(image[i[0]:i[2]+1,i[1]:i[3]+1]))[0]),end=" ")
+for characters in charactersLineWise:
+    for i in characters:
+        print(chr(alg.predict(Features.getFeatures(image[i[0]:i[2]+1,i[1]:i[3]+1]))[0]),end=" ")
+    print()
 
 cv2.waitKey()
 print("hello")

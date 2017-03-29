@@ -12,7 +12,7 @@ for smpl in range(11,37):
 	trdata=[]
 	clasArr=[]
 	totalFiles=len(os.listdir(path+str(smpl)))
-	for imno in range(min(100,totalFiles)):
+	for imno in range(min(200,totalFiles)):
 		print(path+str(smpl)+"/"+str(imno)+".png")
 		img=cv2.imread(path+str(smpl)+"/"+str(imno)+".png",0)
 

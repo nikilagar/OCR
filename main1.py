@@ -20,10 +20,12 @@ for i in range(65,91):
 
 X_trainData, X_test, y_trainData, y_test = train_test_split(trainData,classification, random_state=int(random.random()*1000))
 
-alg2 = LinearSVC(C = 5)
+#alg2 = LinearSVC(C = 5)
+alg2=ExtraTreesClassifier()
 alg2 = alg2.fit(X_trainData, y_trainData)
 scores = cross_val_score(alg2, X_test , y_test, cv = 10)
-print("LinearSVC accuracy:", sum(scores)/len(scores))
+#print("Linear SVC accuracy:", sum(scores)/len(scores))
+print("Extra Trees accuracy:", sum(scores)/len(scores))
 
 
 alg = RandomForestClassifier(random_state=1, n_estimators=28, max_depth = 9, min_samples_split=10, min_samples_leaf=8)
