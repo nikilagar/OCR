@@ -7,10 +7,17 @@ from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier, GradientBoostingClassifier, ExtraTreesClassifier
 from sklearn.cross_validation import train_test_split
 
-DataFolderPath="tmpdata1"
+DataFolderPath="tmpdata2small"
 
 classification=[]
 trainData=[]
+for i in range(97,123):
+    df = pd.read_csv(DataFolderPath + '/trdata' + chr(i) + '.csv')
+    trainData += df.values.tolist()
+    df = pd.DataFrame()
+    df = pd.read_csv(DataFolderPath + '/clasArr' + chr(i) + '.csv')
+    classification += df.values.tolist()[0]
+DataFolderPath="tmpdata1"
 for i in range(65,91):
     df = pd.read_csv(DataFolderPath + '/trdata' + chr(i) + '.csv')
     trainData += df.values.tolist()

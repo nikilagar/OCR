@@ -1,5 +1,7 @@
 from sklearn.linear_model import LogisticRegression
-
+import GUI
+import normalizer
+from matplotlib import pyplot as plt
 from BinarizeImage import *
 import verticalProfile as vp
 import horizontalProfile as hp
@@ -9,11 +11,12 @@ import numpy as np
 import random
 from sklearn.cross_validation import train_test_split
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier, GradientBoostingClassifier, ExtraTreesClassifier
+import sys
 
 DataFolderPath="tmpdata1"
 
 
-image=cv2.imread("images/fIMage.jpg",0)
+image=cv2.imread("images/smallPcapital.png",0)
 image=getBinarizedImage(image) #Getting Binarized image and Denoised image :)
 
 
@@ -41,19 +44,59 @@ for i in range(65,91):
     df = pd.read_csv(DataFolderPath+'/clasArr'+chr(i)+'.csv')
     classification += df.values.tolist()[0]
 
+DataFolderPath="tmpdata2small"
+for i in range(97,123):
+    df = pd.read_csv(DataFolderPath+ '/trdata'+chr(i)+'.csv')
+    trainData += df.values.tolist()
+    df = pd.DataFrame()
+    df = pd.read_csv(DataFolderPath+'/clasArr'+chr(i)+'.csv')
+    classification += df.values.tolist()[0]
+
+
 X_trainData, X_test, y_trainData, y_test = train_test_split(trainData,classification, random_state=int(random.random()*1000))
 
-alg=LogisticRegression(C=.9, max_iter=80)
+#alg=LogisticRegression(C=.9, max_iter=80)
 #alg = RandomForestClassifier(random_state=1, n_estimators=28, max_depth = 9, min_samples_split=10, min_samples_leaf=8)
-#alg=ExtraTreesClassifier()
+alg=ExtraTreesClassifier()
 alg.fit(trainData, classification)
 for characters in charactersLineWise:
     for i in characters:
-        print(chr(alg.predict(Features.getFeatures(image[i[0]:i[2]+1,i[1]:i[3]+1]))[0]),end=" ")
+        croppedImage=image[i[0]:i[2]+1,i[1]:i[3]+1]
+        probabMatrix=alg.predict_proba(Features.getFeatures(croppedImage))
+        print(probabMatrix)
+        lis=[]
+        for i in range(0,52):
+            lis.append([probabMatrix[0][i],i])
+        lis.sort(reverse=True)
+        print(lis)
+        sortedLetters=[]
+        for i in lis:
+            if(i[0]>0):
+                if(i[1]>=26):
+                    sortedLetters.append([chr(71+i[1]),i[0]])
+                else:
+                    sortedLetters.append([chr(65+i[1]),i[0]])
+        stri="Candidates after classification, probability wise :::  \n"
+        for i in range(0,min(5,len(sortedLetters))):
+            stri+=sortedLetters[i][0]+"("+str(sortedLetters[i][1])+")"+" , "
+
+        fig = plt.figure(figsize=(4.6,4.6))
+        plt.subplot(121)
+        plt.imshow(croppedImage,cmap='gray')
+        plt.subplot(122)
+        plt.imshow(normalizer.getNormalizedImage(croppedImage),cmap='gray')
+        plt.suptitle(stri)
+        plt.show()
+
+        #GUI.buildGUI(alg.predict_proba(Features.getFeatures(croppedImage)),croppedImage)
+        #cv2.imshow("After segmentation",croppedImage)
+        #cv2.imshow("After normalization and thinning", croppedImage)
+
+        print(chr(alg.predict(Features.getFeatures(croppedImage))[0]),end=" ")
     print()
 
-cv2.waitKey()
 print("hello")
+
 
 
 
