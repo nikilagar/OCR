@@ -15,8 +15,10 @@ import sys
 
 DataFolderPath="tmpdata1"
 
-
-image=cv2.imread("images/smallPcapital.png",0)
+if(len(sys.argv)<2):
+    image=cv2.imread("images/sampleInput.png",0)
+else :
+    image=cv2.imread(sys.argv[1],0)
 image=getBinarizedImage(image) #Getting Binarized image and Denoised image :)
 
 
@@ -57,18 +59,26 @@ X_trainData, X_test, y_trainData, y_test = train_test_split(trainData,classifica
 
 #alg=LogisticRegression(C=.9, max_iter=80)
 #alg = RandomForestClassifier(random_state=1, n_estimators=28, max_depth = 9, min_samples_split=10, min_samples_leaf=8)
-alg=ExtraTreesClassifier()
-alg.fit(trainData, classification)
+
+
+
+alg = RandomForestClassifier(random_state=1, n_estimators=28, max_depth = 9, min_samples_split=10, min_samples_leaf=8)
+alg1 = LogisticRegression(C=.9, max_iter=80)
+alg2=ExtraTreesClassifier()
+
+eclf1 = VotingClassifier(estimators=[('lr', alg1), ('etc', alg2), ('rfc', alg)], voting = 'soft')
+eclf1 = eclf1.fit(trainData,classification)
+
 for characters in charactersLineWise:
     for i in characters:
         croppedImage=image[i[0]:i[2]+1,i[1]:i[3]+1]
-        probabMatrix=alg.predict_proba(Features.getFeatures(croppedImage))
-        print(probabMatrix)
+        probabMatrix=eclf1.predict_proba(Features.getFeatures(croppedImage))
+        #print(probabMatrix)
         lis=[]
         for i in range(0,52):
             lis.append([probabMatrix[0][i],i])
         lis.sort(reverse=True)
-        print(lis)
+        #print(lis)
         sortedLetters=[]
         for i in lis:
             if(i[0]>0):
@@ -76,35 +86,29 @@ for characters in charactersLineWise:
                     sortedLetters.append([chr(71+i[1]),i[0]])
                 else:
                     sortedLetters.append([chr(65+i[1]),i[0]])
-        stri="Candidates after classification, probability wise :::  \n"
-        for i in range(0,min(5,len(sortedLetters))):
-            stri+=sortedLetters[i][0]+"("+str(sortedLetters[i][1])+")"+" , "
 
-        fig = plt.figure(figsize=(4.6,4.6))
-        plt.subplot(121)
-        plt.imshow(croppedImage,cmap='gray')
-        plt.subplot(122)
-        plt.imshow(normalizer.getNormalizedImage(croppedImage),cmap='gray')
-        plt.suptitle(stri)
-        plt.show()
 
         #GUI.buildGUI(alg.predict_proba(Features.getFeatures(croppedImage)),croppedImage)
         #cv2.imshow("After segmentation",croppedImage)
         #cv2.imshow("After normalization and thinning", croppedImage)
 
-        print(chr(alg.predict(Features.getFeatures(croppedImage))[0]),end=" ")
+        print(chr(eclf1.predict(Features.getFeatures(croppedImage))[0]),end=" ")
+        
+        stri = "Candidates after classification, probability wise :::  \n"
+        for i in range(0, min(5, len(sortedLetters))):
+            stri += sortedLetters[i][0] + "(" + str(round(sortedLetters[i][1],2)) + ")" + " , "
+
+        fig = plt.figure(figsize=(4.6, 4.6))
+        ax = fig.add_subplot(1, 2, 1)
+        ax.imshow(cv2.resize(croppedImage, (24, 24)), cmap='gray')
+        ax.set_title("Segmented character")
+        # plt.imshow(croppedImage,cmap='gray')
+        ax = fig.add_subplot(122)
+        ax.imshow(normalizer.getNormalizedImage(croppedImage), cmap='gray')
+        ax.set_title("Thinned Image")
+        plt.suptitle(stri)
+        plt.show()
     print()
-
-print("hello")
-
-
-
-
-
-
-
-
-
 
 
 

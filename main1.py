@@ -47,3 +47,7 @@ alg1 = alg1.fit(X_trainData, y_trainData)
 scores = cross_val_score(alg1, X_test , y_test, cv = 10)
 print("LogisticRegression accuracy:", sum(scores)/len(scores))
 
+eclf1 = VotingClassifier(estimators=[('lr', alg1), ('etc', alg2), ('rfc', alg)], voting = 'soft')
+eclf1 = eclf1.fit(X_trainData,y_trainData)
+scores = cross_val_score(eclf1, X_test , y_test, cv = 10)
+print("Voting Classifier accuracy:", sum(scores)/len(scores))

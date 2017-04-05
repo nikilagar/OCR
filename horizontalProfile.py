@@ -1,3 +1,8 @@
+from matplotlib import pyplot as plt
+import numpy as np
+from scipy.interpolate import spline
+
+
 def getPoints(img):
     imgx,imgy=len(img),len(img[0])
     x=[];y=[];finalPts=[]
@@ -16,7 +21,8 @@ def getPoints(img):
         while i<imgx and y[i]>0:
             i+=1
         if(f==True):
-            finalPts.append([pr,i-1])
+            if(i-pr>3):
+                finalPts.append([pr,i-1])
             i-=1
         i+=1
     #plt.show()
